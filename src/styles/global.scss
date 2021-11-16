@@ -7,8 +7,14 @@
 @import "node_modules/bootstrap-vue/src/index.scss";
 
 .register-form {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 20px;
   margin: auto;
   width: 25%;
+  .form-title {
+    padding-bottom: 10px;
+  }
   .form-input-control {
     .submit-button {
         width: 100%;

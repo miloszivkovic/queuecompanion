@@ -1,6 +1,7 @@
 <template>
   <div class="register-form">
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+    <h2 class="form-title">Sign up</h2>
+    <b-form @submit="onSubmit" @reset="onReset">
       <b-form-group id="input-group-1" label="Username" label-for="input-1">
         <b-form-input
           id="input-1"
@@ -63,53 +64,79 @@
         ></b-form-input>
       </b-form-group>
 
+      <b-form-group id="input-group-7" label="Country" label-for="input-7">
+        <b-form-select
+          id="input-7"
+          v-model="form.country"
+          :options="countriesOptions"
+          required
+        >
+        </b-form-select>
+      </b-form-group>
+
       <div class="form-input-control">
         <b-button type="submit" variant="primary" class="submit-button"
-          >Submit</b-button
+          >Sign up</b-button
         >
       </div>
     </b-form>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
+<script lang="ts">
+import { countries } from "@/common/country-data-store";
+import Vue from "vue";
+
+const countryNames: string[] = [];
+countries.forEach((element) => {
+  countryNames.push(element.name);
+});
+
+declare interface IRegisterForm {
+  username: string;
+  password: string;
+  repeatPassword: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  country: string | null;
+}
+
+export default Vue.extend({
+  data(): {
+    form: IRegisterForm;
+    countriesOptions: string[];
+  } {
     return {
       form: {
+        username: "",
+        password: "",
+        repeatPassword: "",
         email: "",
-        name: "",
-        food: null,
-        checked: [],
+        firstName: "",
+        lastName: "",
+        country: null,
       },
-      foods: [
-        { text: "Select One", value: null },
-        "Carrots",
-        "Beans",
-        "Tomatoes",
-        "Corn",
-      ],
-      show: true,
+      countriesOptions: countryNames,
     };
   },
   methods: {
-    onSubmit(event) {
+    onSubmit(event: any): void {
+      // TODO
       event.preventDefault();
       alert(JSON.stringify(this.form));
     },
-    onReset(event) {
+    onReset(event: any): void {
       event.preventDefault();
       // Reset our form values
+      this.form.username = "";
+      this.form.password = "";
+      this.form.repeatPassword = "";
       this.form.email = "";
-      this.form.name = "";
-      this.form.food = null;
-      this.form.checked = [];
-      // Trick to reset/clear native browser form validation state
-      this.show = false;
-      this.$nextTick(() => {
-        this.show = true;
-      });
+      this.form.firstName = "";
+      this.form.lastName = "";
+      this.form.country = null;
     },
   },
-};
+});
 </script>
